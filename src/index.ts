@@ -1,17 +1,26 @@
-import fastify from "fastify";
+import {
+  fastify,
+  FastifyInstance,
+  FastifyRequest,
+  FastifyReply,
+} from "fastify";
+import { router } from "./routes";
 
-const server = fastify({
+const server: FastifyInstance = fastify({
   logger: true,
 });
 
-server.get("/ping", async (request, reply) => {
-  return "pong\n";
-});
+server.register(router);
 
-server.listen({ port: 8080 }, (err, address) => {
+const serverOptions = {
+  port: 3000,
+  host: "0.0.0.0",
+};
+
+server.listen(serverOptions, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
+  server.log.info(`Server listening at ${address}`);
 });
