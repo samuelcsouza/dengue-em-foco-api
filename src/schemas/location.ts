@@ -3,6 +3,8 @@ export interface Location {
   name: string;
   description?: string;
   address: string;
+  phone: string;
+  postal_code: string;
   latitude: number;
   longitude: number;
   visited: boolean;
@@ -16,5 +18,10 @@ export interface NewLocation {
   address: string;
   latitude: number;
   longitude: number;
-  visited: boolean;
+  phone: string;
+  postal_code: string;
+}
+
+export interface LocationId {
+  id: string;
 }

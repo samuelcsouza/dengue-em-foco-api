@@ -10,7 +10,7 @@ const server: FastifyInstance = fastify({
   logger: true,
 });
 
-server.register(router);
+server.register(router, { prefix: "/v1" });
 
 const serverOptions = {
   port: 3000,
