@@ -5,19 +5,19 @@ export interface Location {
   address: string;
   phone: string;
   postal_code: string;
-  latitude: number;
-  longitude: number;
   visited: boolean;
   visited_at: string | null;
   created_at: string;
+  latitude?: number;
+  longitude?: number;
+  bounding_box?: string[];
+  match_address?: string;
 }
 
 export interface NewLocation {
   name: string;
   description?: string;
   address: string;
-  latitude: number;
-  longitude: number;
   phone: string;
   postal_code: string;
 }
