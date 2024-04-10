@@ -1,9 +1,4 @@
-import {
-  fastify,
-  FastifyInstance,
-  FastifyRequest,
-  FastifyReply,
-} from "fastify";
+import { fastify, FastifyInstance } from "fastify";
 import { router } from "./routes";
 
 const server: FastifyInstance = fastify({
