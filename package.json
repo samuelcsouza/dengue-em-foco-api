@@ -1,0 +1,25 @@
+{
+  "name": "dengue-em-foco-api",
+  "version": "1.0.0",
+  "description": "UNIVESP Integrator Project III",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p src/tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "mongodb": "^6.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}
