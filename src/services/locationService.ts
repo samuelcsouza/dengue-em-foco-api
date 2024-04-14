@@ -2,19 +2,24 @@ import { randomUUID } from "crypto";
 import { Location, NewLocation } from "../schemas/location";
 import { GeocodeService } from "./geocodeService";
 import { Point } from "../schemas/geocode";
+import { LocationRepository } from "../repository/locationRepository";
 
 export class LocationService {
   private geocodeService: GeocodeService;
+  private locationRepository: LocationRepository;
 
-  constructor(geocodeService: GeocodeService) {
+  constructor(
+    geocodeService: GeocodeService,
+    locationRepository: LocationRepository
+  ) {
     this.geocodeService = geocodeService;
+    this.locationRepository = locationRepository;
   }
 
   public create = async (location: NewLocation): Promise<Location> => {
     const point: Point = await this.geocodeService.forward(location.address);
 
     const newLocation: Location = {
-      id: randomUUID(),
       ...location,
       visited: false,
       visited_at: null,
@@ -25,6 +30,26 @@ export class LocationService {
       match_address: point.match_address,
     };
 
-    return newLocation;
+    const doc = await this.locationRepository.save(newLocation);
+
+    return doc;
+  };
+
+  public get = async (locationId: string): Promise<Location> => {
+    const location = await this.locationRepository.get(locationId);
+    return location;
+  };
+
+  public list = async (skip: number, limit: number): Promise<Location[]> => {
+    const locations = await this.locationRepository.list(skip, limit);
+    return locations;
+  };
+
+  public markAsVisited = async (locationId: string): Promise<Location> => {
+    return await this.locationRepository.markAsVisited(locationId);
+  };
+
+  public delete = async (locationId: string): Promise<boolean> => {
+    return await this.locationRepository.delete(locationId);
   };
 }

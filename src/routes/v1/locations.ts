@@ -4,7 +4,11 @@ import {
   FastifyReply,
   FastifyPluginAsync,
 } from "fastify";
-import { LocationId, NewLocation } from "../../schemas/location";
+import {
+  LocationId,
+  LocationPagination,
+  NewLocation,
+} from "../../schemas/location";
 import { locationService } from "../../config/services";
 
 export const locationsRoute: FastifyPluginAsync = async (
@@ -22,8 +26,9 @@ export const locationsRoute: FastifyPluginAsync = async (
   fastify.get("/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as LocationId;
 
-    const response = { location: id };
-    reply.status(200).send(response);
+    const location = await locationService.get(id);
+
+    reply.status(200).send(location);
   });
 
   // mark as visited
@@ -32,7 +37,7 @@ export const locationsRoute: FastifyPluginAsync = async (
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as LocationId;
 
-      const response = { location: id };
+      const response = await locationService.markAsVisited(id);
       reply.status(200).send(response);
     }
   );
@@ -43,16 +48,21 @@ export const locationsRoute: FastifyPluginAsync = async (
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as LocationId;
 
-      const response = { location: id };
+      const isRemoved = await locationService.delete(id);
+
+      const response = {
+        deleted: isRemoved,
+      };
+
       reply.status(200).send(response);
     }
   );
 
   // list all
   fastify.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as LocationId;
+    const { skip, limit } = request.query as LocationPagination;
 
-    const response = { location: id };
-    reply.status(200).send(response);
+    const locations = await locationService.list(Number(skip), Number(limit));
+    reply.status(200).send(locations);
   });
 };

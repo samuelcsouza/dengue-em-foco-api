@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export interface Location {
-  id: string;
+  _id?: ObjectId;
   name: string;
   description?: string;
   address: string;
@@ -24,4 +26,9 @@ export interface NewLocation {
 
 export interface LocationId {
   id: string;
+}
+
+export interface LocationPagination {
+  skip: number;
+  limit: number;
 }

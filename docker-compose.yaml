@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - GEOCODE_API_KEY=${GEOCODE_API_KEY}
+      - DB_COLLECTION=${DB_COLLECTION}
+      - DB_DATABASE=${DB_DATABASE}
     restart: unless-stopped
     ports:
       - "3000:3000"
