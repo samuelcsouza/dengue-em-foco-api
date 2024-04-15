@@ -11,58 +11,72 @@ import {
 } from "../../schemas/location";
 import { locationService } from "../../config/services";
 
-export const locationsRoute: FastifyPluginAsync = async (
-  fastify: FastifyInstance
-): Promise<void> => {
-  // new
-  fastify.post("/", async (request: FastifyRequest, reply: FastifyReply) => {
+import { swagger } from "../docs/locations";
+
+class LocationsEndpoints {
+  new = async (request: FastifyRequest, reply: FastifyReply) => {
     const newLocation: NewLocation = request.body as NewLocation;
     const location = await locationService.create(newLocation);
 
     reply.status(201).send(location);
-  });
+  };
 
-  // get by id
-  fastify.get("/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  getById = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as LocationId;
 
     const location = await locationService.get(id);
 
     reply.status(200).send(location);
-  });
+  };
 
-  // mark as visited
-  fastify.patch(
-    "/:id",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const { id } = request.params as LocationId;
+  markAsVisited = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as LocationId;
 
-      const response = await locationService.markAsVisited(id);
-      reply.status(200).send(response);
-    }
-  );
+    const response = await locationService.markAsVisited(id);
+    reply.status(200).send(response);
+  };
 
-  // delete
-  fastify.delete(
-    "/:id",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const { id } = request.params as LocationId;
+  delete = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as LocationId;
 
-      const isRemoved = await locationService.delete(id);
+    const isRemoved = await locationService.delete(id);
 
-      const response = {
-        deleted: isRemoved,
-      };
+    const response = {
+      deleted: isRemoved,
+    };
 
-      reply.status(200).send(response);
-    }
-  );
+    reply.status(200).send(response);
+  };
 
-  // list all
-  fastify.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
+  getAll = async (request: FastifyRequest, reply: FastifyReply) => {
     const { skip, limit } = request.query as LocationPagination;
 
     const locations = await locationService.list(Number(skip), Number(limit));
     reply.status(200).send(locations);
-  });
+  };
+}
+
+export const locationsRoute: FastifyPluginAsync = async (
+  fastify: FastifyInstance
+): Promise<void> => {
+  const locationsEndpoints = new LocationsEndpoints();
+
+  // new
+  fastify.post("/", swagger.new, locationsEndpoints.new);
+
+  // get by id
+  fastify.get("/:id", swagger.getById, locationsEndpoints.getById);
+
+  // mark as visited
+  fastify.patch(
+    "/:id",
+    swagger.markAsVisited,
+    locationsEndpoints.markAsVisited
+  );
+
+  // delete
+  fastify.delete("/:id", swagger.delete, locationsEndpoints.delete);
+
+  // list all
+  fastify.get("/", swagger.getAll, locationsEndpoints.getAll);
 };
