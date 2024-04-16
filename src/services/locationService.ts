@@ -3,6 +3,7 @@ import { Location, NewLocation } from "../schemas/location";
 import { GeocodeService } from "./geocodeService";
 import { Point } from "../schemas/geocode";
 import { LocationRepository } from "../repository/locationRepository";
+import { ObjectId } from "mongodb";
 
 export class LocationService {
   private geocodeService: GeocodeService;
@@ -51,5 +52,19 @@ export class LocationService {
 
   public delete = async (locationId: string): Promise<boolean> => {
     return await this.locationRepository.delete(locationId);
+  };
+
+  public update = async (
+    locationId: string,
+    location: Location
+  ): Promise<Location> => {
+    const newLocation: Location = {
+      ...location,
+      _id: new ObjectId(locationId),
+    };
+
+    const doc = await this.locationRepository.update(newLocation);
+
+    return doc;
   };
 }

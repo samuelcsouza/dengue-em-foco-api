@@ -195,6 +195,65 @@ class LocationsSwagger {
       },
     },
   };
+
+  update = {
+    schema: {
+      description: "Update location",
+      tags: [this.tag],
+      summary: "Update location",
+      // security: [{ apiKey: [] }],
+      body: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          description: { type: "string" },
+          address: { type: "string" },
+          phone: { type: "string" },
+          postal_code: { type: "string" },
+          visited: { type: "boolean", nullable: true },
+          visited_at: { type: "string", nullable: true },
+          created_at: { type: "string" },
+          latitude: { type: "number" },
+          longitude: { type: "number" },
+          bounding_box: {
+            type: "array",
+            nullable: true,
+            items: {
+              type: "string",
+            },
+          },
+          match_address: { type: "string", nullable: true },
+        },
+      },
+      response: {
+        200: {
+          description: "Updated",
+          type: "object",
+          properties: {
+            _id: { type: "string" },
+            name: { type: "string" },
+            description: { type: "string" },
+            address: { type: "string" },
+            phone: { type: "string" },
+            postal_code: { type: "string" },
+            visited: { type: "boolean", nullable: true },
+            visited_at: { type: "string", nullable: true },
+            created_at: { type: "string" },
+            latitude: { type: "number", nullable: true },
+            longitude: { type: "number", nullable: true },
+            bounding_box: {
+              type: "array",
+              nullable: true,
+              items: {
+                type: "string",
+              },
+            },
+            match_address: { type: "string", nullable: true },
+          },
+        },
+      },
+    },
+  };
 }
 
 export const swagger = new LocationsSwagger();
