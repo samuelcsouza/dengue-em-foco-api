@@ -26,8 +26,16 @@ export class GeocodeService {
       });
 
     if (forwardGeocde.length === 0) {
-      // throw new Error()
-      console.log("zero kkk");
+      console.debug("Latitude/Longitude not found for this address.");
+
+      const nullPoint: Point = {
+        latitude: null,
+        longitude: null,
+        boundingbox: null,
+        match_address: null,
+      };
+
+      return nullPoint;
     }
 
     const point: Point = {

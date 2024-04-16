@@ -30,15 +30,16 @@ class LocationsSwagger {
             visited: { type: "boolean" },
             visited_at: { type: "string", nullable: true },
             created_at: { type: "string" },
-            latitude: { type: "number" },
-            longitude: { type: "number" },
+            latitude: { type: "number", nullable: true },
+            longitude: { type: "number", nullable: true },
             bounding_box: {
               type: "array",
+              nullable: true,
               items: {
                 type: "string",
               },
             },
-            match_address: { type: "string" },
+            match_address: { type: "string", nullable: true },
           },
         },
       },
@@ -93,7 +94,7 @@ class LocationsSwagger {
     schema: {
       description: "Set location with visited",
       tags: [this.tag],
-      summary: "Update location",
+      summary: "Mark as Visited",
       params: {
         type: "object",
         properties: {
