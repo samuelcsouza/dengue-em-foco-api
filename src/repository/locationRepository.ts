@@ -98,4 +98,20 @@ export class LocationRepository {
       throw error;
     }
   };
+
+  update = async (location: Location): Promise<Location> => {
+    try {
+      const filter = { _id: location._id };
+      const options = { upsert: false };
+      const updateDoc = {
+        $set: location,
+      };
+
+      await this.locationCollection.updateOne(filter, updateDoc, options);
+      return location;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 }

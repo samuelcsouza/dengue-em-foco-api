@@ -10,10 +10,10 @@ export interface Location {
   visited: boolean;
   visited_at: string | null;
   created_at: string;
-  latitude?: number;
-  longitude?: number;
-  bounding_box?: string[];
-  match_address?: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  bounding_box?: string[] | null;
+  match_address?: string | null;
 }
 
 export interface NewLocation {

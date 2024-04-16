@@ -1,8 +1,8 @@
 export interface Point {
-  latitude: number;
-  longitude: number;
-  boundingbox: string[];
-  match_address: string;
+  latitude: number | null;
+  longitude: number | null;
+  boundingbox: string[] | null;
+  match_address: string | null;
 }
 
 export interface ForwardGeocode {

@@ -8,6 +8,7 @@ import {
   LocationId,
   LocationPagination,
   NewLocation,
+  Location,
 } from "../../schemas/location";
 import { locationService } from "../../config/services";
 
@@ -54,6 +55,15 @@ class LocationsEndpoints {
     const locations = await locationService.list(Number(skip), Number(limit));
     reply.status(200).send(locations);
   };
+
+  update = async (request: FastifyRequest, reply: FastifyReply) => {
+    const location: Location = request.body as Location;
+    const { id } = request.params as LocationId;
+
+    const response = await locationService.update(id, location);
+
+    reply.status(200).send(response);
+  };
 }
 
 export const locationsRoute: FastifyPluginAsync = async (
@@ -61,22 +71,14 @@ export const locationsRoute: FastifyPluginAsync = async (
 ): Promise<void> => {
   const locationsEndpoints = new LocationsEndpoints();
 
-  // new
   fastify.post("/", swagger.new, locationsEndpoints.new);
-
-  // get by id
   fastify.get("/:id", swagger.getById, locationsEndpoints.getById);
-
-  // mark as visited
   fastify.patch(
     "/:id",
     swagger.markAsVisited,
     locationsEndpoints.markAsVisited
   );
-
-  // delete
   fastify.delete("/:id", swagger.delete, locationsEndpoints.delete);
-
-  // list all
   fastify.get("/", swagger.getAll, locationsEndpoints.getAll);
+  fastify.put("/:id", swagger.update, locationsEndpoints.update);
 };
