@@ -47,10 +47,15 @@ server.register(fastifySwaggerUi, swaggerUiOptions);
 
 server.register(router, { prefix: "/v1" });
 
-const serverOptions = {
-  port: 3000,
+const serverOptions: { host: string; port?: number } = {
   host: "0.0.0.0",
 };
+
+if (process.env.PORT) {
+  serverOptions["port"] = Number(process.env.PORT);
+} else {
+  serverOptions["port"] = 3000;
+}
 
 server.listen(serverOptions, (err, address) => {
   if (err) {
