@@ -48,7 +48,7 @@ export class LocationRepository {
   list = async (skip: number, limit: number): Promise<Location[]> => {
     try {
       const locations: Location[] = [];
-      const documents = this.locationCollection
+      const documents = await this.locationCollection
         .find({})
         .skip(skip)
         .limit(limit);
