@@ -20,6 +20,7 @@ export class LocationRepository {
 
   save = async (location: Location): Promise<Location> => {
     try {
+      await this.config();
       await this.locationCollection.insertOne(location);
       return location;
     } catch (error) {
@@ -30,6 +31,7 @@ export class LocationRepository {
 
   get = async (locationId: string): Promise<Location> => {
     try {
+      await this.config();
       const doc = await this.locationCollection.findOne({
         _id: new ObjectId(locationId),
       });
@@ -47,6 +49,7 @@ export class LocationRepository {
 
   list = async (skip: number, limit: number): Promise<Location[]> => {
     try {
+      await this.config();
       const locations: Location[] = [];
       const documents = await this.locationCollection
         .find({})
@@ -66,6 +69,7 @@ export class LocationRepository {
 
   markAsVisited = async (locationId: string): Promise<Location> => {
     try {
+      await this.config();
       const location = await this.get(locationId);
       if (location === null) {
         throw new NotFoundError();
@@ -88,6 +92,7 @@ export class LocationRepository {
 
   delete = async (locationId: string): Promise<boolean> => {
     try {
+      await this.config();
       const doc = await this.locationCollection.deleteOne({
         _id: new ObjectId(locationId),
       });
@@ -101,6 +106,7 @@ export class LocationRepository {
 
   update = async (location: Location): Promise<Location> => {
     try {
+      await this.config();
       const filter = { _id: location._id };
       const options = { upsert: false };
       const updateDoc = {
